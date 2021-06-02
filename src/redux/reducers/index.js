@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
 import languageReducer from './language.reducer';
-
+import userReducer from './userReducer';
 const appReducers = combineReducers({
-    languageReducer
+    languageReducer,
+    userReducer
 });
 
 export default appReducers;

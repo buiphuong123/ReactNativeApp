@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from '../screens/home.screen';
-import ContactScreen from '../screens/contact.screen';
-import SettingScreen from "../screens/setting.screen";
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as actions from './../redux/actions/index';

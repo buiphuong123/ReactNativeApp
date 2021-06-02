@@ -2,15 +2,23 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import admin from '../../res/images/admin.png';
 import { Card, CardItem, Body } from 'native-base';
-import black from '../../res/images/black.jpg';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppText from '../components/app-text';
-export default class Menu extends Component {
+import { connect } from 'react-redux';
+import * as actions from './../redux/actions/index';
+
+
+class Menu extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+        }
+    }
     render() {
-        const { navigation } = this.props;
-        return (
-            <View style={styles.container}>
-                <View style={styles.header}>
+        const { navigation, username } = this.props;
+        const loginJs = (
+            <View style={styles.header}>
                     <View>
                         <Image style={styles.image} source={admin} />
                     </View>
@@ -29,6 +37,32 @@ export default class Menu extends Component {
 
                     </View>
                 </View>
+        )
+        const logoutJs = (
+            <View style={styles.header}>
+                    <View>
+                        <Image style={styles.image} source={admin} />
+                    </View>
+                    <View style={styles.setaccount}>
+                        <Text style={styles.account}>{this.props.username}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={()=> navigation.navigate("Login")}>
+                                <Text style={styles.login}>Edit</Text>
+                            </TouchableOpacity>
+
+                            <Text style={styles.login}>|</Text>
+                            <TouchableOpacity onPress={()=> this.props.setUserLogout(this.state.username)}>
+                                <Text style={styles.login}>Logout</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+            </View>
+        )
+        const mainUser= username==''? loginJs: logoutJs
+        return (
+            <View style={styles.container}>
+                {mainUser}
                 <View style={styles.footer}>
                     <View style={{ margin: 5 }}>
                         <Card>
@@ -39,6 +73,7 @@ export default class Menu extends Component {
                                     <Icon name="language" size={28} />
                                         <TouchableOpacity style={styles.language} onPress= {()=> navigation.navigate("Language")}>
                                             <AppText i18nKey={'Your language'}>Your language</AppText>
+                                            <Text>{this.props.language}</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -70,4 +105,23 @@ var styles = StyleSheet.create({
     button: { width: 500 },
     language: {height: 50, padding: 5}
 
-})
+});
+
+const mapStateToProps = state => {
+	return {
+		username: state.userReducer.username,
+        language: state.languageReducer.language
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setUserLogout: username => {
+            dispatch(actions.logoutUser(username));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+
+

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import Menu from '../components/Menu';
-import User from '../components/User.js'
+import Homepages from '../navigations/Homepages';
 const Drawer = createDrawerNavigator();
 
 export default class Main extends Component{
@@ -12,10 +12,11 @@ export default class Main extends Component{
                 drawerContent={props => <Menu {...props} />}
                 >
 
-                 <Drawer.Screen name="User" initialRouteName 
+                 <Drawer.Screen name="Homepages" 
                  options={{ headerShown: false }}
-                 component={User} 
+                 component={Homepages} 
                  />
+
              </Drawer.Navigator>
         )
     }

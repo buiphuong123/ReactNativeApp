@@ -16,6 +16,7 @@
     "@react-navigation/drawer": "^6.0.0-next.13",
     "@react-navigation/native": "^6.0.0-next.9",
     "@react-navigation/stack": "^6.0.0-next.20",
+    "axios": "^0.21.1",
     "i18next": "^20.3.0",
     "native-base": "^2.15.2",
     "react": "17.0.1",

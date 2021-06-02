@@ -11,13 +11,13 @@ class AppText extends Component {
 		};
 	}
 	
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 			const { language } = this.props;
 			if (language) this.setMainLocaleLanguage(language);
 		
 	}
 
-	componentWillReceiveProps = nextProps => {
+	componentDidUpdate = nextProps => {
 		const { language } = nextProps;
 		if (language) this.setMainLocaleLanguage(language);
 	}

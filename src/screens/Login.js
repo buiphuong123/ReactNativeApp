@@ -1,111 +1,163 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Input } from 'react-native-elements';
 import AppText from '../components/app-text';
-import login from '../../res/api/login';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import * as actions from './../redux/actions/index';
+
+
 import Account from './Account';
-export default class Login extends Component{
-    constructor(props){
+class Login extends Component {
+    constructor(props) {
         super(props);
-        this.state={
-            showPass: true, 
+        this.state = {
+            showPass: true,
             press: false,
-            email: '',
+            username: '',
             password: '',
+            successmess: '',
+            errormess: '',
         }
     }
 
-    showPass=()=>{
-        if(this.state.press==false){
-            this.setState({showPass: false, press: true})  
+    showPass = () => {
+        if (this.state.press == false) {
+            this.setState({ showPass: false, press: true })
         }
-        else{
-            this.setState({showPass: true, press: false})
+        else {
+            this.setState({ showPass: true, press: false })
         }
     }
-    loginUser(){
-        const {email, password} = this.state;
-        login(email, password)
-        .then(res=>{
-            console.log(res);
-        });// thanh cong hay khong thanh cong
+
+    Login() {
+        axios.post("https://language-backend.vercel.app/login", {
+            "username": this.state.username,
+            "password": this.state.password,
+        }, {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+        })
+            .then((response) => {
+                console.log(response.data);
+                this.setState({ successmess: response.data.message });
+                this.setState({ errormess: response.data.error });
+                setTimeout(() => {
+                    this.setState({ successmess: '' });
+                    this.setState({ errormess: '' });
+                }, 2000);
+                // this.setState({result: response.data.id})  // ket qua tra ve 
+                console.log('email' + response.data.mail);
+                if (response.data.message != undefined) {
+                    this.props.setUser(this.state.username, this.state.password);
+                    setTimeout(() => {
+                        this.props.navigation.navigate("Contact");
+                    }, 2000)
+
+
+
+                }
+            })
+            .catch((error) => { console.log(error)});
     }
+
     render() {
         const { navigation } = this.props;
-        return(
-            <ScrollView style={{ backgroundColor: 'black', }}>
-                <View style={{justifyContent: 'space-around'}}>
+        const sucessmessage = (
+            <View style={[styles.alertmess, {backgroundColor: "blue"}]}>
+                <Text style={{color: 'white'}}>{this.state.successmess}</Text>
+            </View>
+        );
+        const errormessage = (
+            <View style={[styles.alertmess, {backgroundColor: "red"}]}>
+                <Text style={{color: 'white'}}>{this.state.errormess}</Text>
+            </View>
+        );
+        return (
+            <ScrollView style={{ backgroundColor: 'black', }} contentContainerStyle={{flex: 1 }}>
+                <View style={{ justifyContent: 'space-around'}}>
                     <View style={styles.container}>
-                        <Image 
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <Icon name="md-chevron-back" size={28} color='white' style={{ marginTop: 20, marginLeft: 10 }} />
+                        </TouchableOpacity>
+                        <Image
                             source={require('../../res/images/admin.png')}
                             resizeMode="center"
                             style={styles.image}
                         />
+                        <View />
                     </View>
-                    <View style={styles.boxLogin}>
-                            <View style={[styles.container1, {borderColor: this.state.isFocused? '#0779ef' : 'black'}]}>
-                                <Input 
-                                    placeholder='email'
-                                    inputStyle={styles.input1}
-                                    value={this.state.email}
-                                    onChangeText={text=> this.setState({ email : text})}
-                                    leftIcon ={
-                                        <Icon
-                                            name="mail"
-                                            size={22}
-                                            color='black'
-                                        />
-                                    }
-                                />
-                            </View>
 
-                            <View style={[styles.container1, {borderColor: this.state.isFocused? '#0779ef' : 'black'}]}>
-                                <Input 
-                                    placeholder='password'
-                                    inputStyle={styles.input1}
-                                    value={this.state.password}
-                                    secureTextEntry={this.state.showPass}
-                                    onChangeText={text=> this.setState({ password : text})}
-                                    leftIcon ={
-                                        <Icon
-                                            name="key"
-                                            size={22}
-                                            color='black'
-                                        />
-                                    }
-                                    rightIcon ={
-                                        <TouchableOpacity onPress={this.showPass.bind()}>
-                                            <Icon
-                                            name={this.state.press == false ? 'eye-off': 'eye'}
-                                            size={22}
-                                            color='black'
-                                        />
-                                        </TouchableOpacity>
-                                    }
-                                />
-                            </View>
-                        
-                       
-                        <View style={{width: '90%'}}>
-                                <AppText i18nKey={'forgot pass'} style={[styles.textBody], {alignSelf: 'flex-end'}}>Forgot password</AppText>
+                    <View style={styles.boxLogin}>
+                        <View style={[styles.container1, { borderColor: this.state.isFocused ? '#0779ef' : 'black' }]}>
+                            <Input
+                                placeholder='username'
+                                inputStyle={styles.input1}
+                                value={this.state.username}
+                                onChangeText={(username) => this.setState({ username })}
+                                leftIcon={
+                                    <Icon
+                                        name="mail"
+                                        size={22}
+                                        color='black'
+                                    />
+                                }
+                            />
                         </View>
-                        <TouchableOpacity style={[styles.container3, {backgroundColor: "black"}]} onPress={this.loginUser.bind(this)}>
-                                <AppText i18nKey={"Login"} style={styles.submitText}>Login</AppText>
+
+                        <View style={[styles.container1, { borderColor: this.state.isFocused ? '#0779ef' : 'black' }]}>
+                            <Input
+                                placeholder='password'
+                                inputStyle={styles.input1}
+                                value={this.state.password}
+                                secureTextEntry={this.state.showPass}
+                                onChangeText={text => this.setState({ password: text })}
+                                leftIcon={
+                                    <Icon
+                                        name="key"
+                                        size={22}
+                                        color='black'
+                                    />
+                                }
+                                rightIcon={
+                                    <TouchableOpacity onPress={this.showPass.bind()}>
+                                        <Icon
+                                            name={this.state.press == false ? 'eye-off' : 'eye'}
+                                            size={22}
+                                            color='black'
+                                        />
+                                    </TouchableOpacity>
+                                }
+                            />
+                        </View>
+
+
+                        <View style={{ width: '90%' }}>
+                            <AppText i18nKey={'forgot pass'} style={[styles.textBody], { alignSelf: 'flex-end' }}>Forgot password</AppText>
+                        </View>
+                        <TouchableOpacity style={[styles.container3, { backgroundColor: "black" }]} onPress={this.Login.bind(this)}>
+                            <AppText i18nKey={"Login"} style={styles.submitText}>Login</AppText>
                         </TouchableOpacity>
                         <AppText i18nKey={'account'} style={'styles.textBody'} >Or connect using</AppText>
-                        <View style={{flexDirection: "row"}}>
-                            <Account color="#3b5c8f" icon ="facebook" title="Facebook" />
-                            <Account color="#ec482f" icon ="google" title="Google" />
+                        <View style={{ flexDirection: "row" }}>
+                            <Account color="#3b5c8f" icon="facebook" title="Facebook" />
+                            <Account color="#ec482f" icon="google" title="Google" />
                         </View>
-                            <AppText i18nKey={'dontaccount'} style={styles.textBody}>Don't have account</AppText>
-                            <TouchableOpacity style={[styles.container3, {backgroundColor: "black"}]} onPress={()=> this.props.navigation.navigate("SignUp")}>
-                                <AppText i18nKey={"SignUp"} style={styles.submitText}>SignUp</AppText>
-                            </TouchableOpacity>
-                            
+                        <AppText i18nKey={'dontaccount'} style={styles.textBody}>Don't have account</AppText>
+                        <TouchableOpacity style={[styles.container3, { backgroundColor: "black" }]} onPress={() => navigation.navigate("SignUp")}>
+                            <AppText i18nKey={"SignUp"} style={styles.submitText}>SignUp</AppText>
+                        </TouchableOpacity>
+
                     </View>
+                        {this.state.errormess == ''|| this.state.errormess == undefined? null : errormessage}
+                        {this.state.successmess == '' || this.state.successmess == undefined ? null : sucessmessage}
+                       
                 </View>
                 
+
             </ScrollView>
         )
     }
@@ -113,23 +165,34 @@ export default class Login extends Component{
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        alignItems : 'center',
-        justifyContent: 'center',
+        flexDirection: 'row', justifyContent: 'space-between', color: 'white'
     },
     image: {
-        width: 100, 
-        height: 150, 
+        width: 100,
+        height: 150,
         marginVertical: 10
     },
-    buttonText:{color: 'white', fontFamily: 'Avenir', fontWeight: '500'},
-    buttonLogin:{height: 50, borderRadius: 20, borderWidth: 1, borderColor: 'black', backgroundColor:'black', margin: 20},
-    boxLogin : {backgroundColor: 'white',  borderRadius: 10, marginTop: 5, marginLeft: 20, marginRight: 20},
-    textBody: {textAlign: 'center', alignItems: 'center', fontSize: 16},
-    boxinput: {backgroundColor: 'black'},
-    input:{color: 'white'},
-    container1: {width: '90%', height: 50, borderRadius: 100, marginVertical: 10},
-    input1: { marginLeft: 5, fontSize: 16},
-    container3: {width: '90%', height: 50, borderColor: 'black', borderRadius: 10, marginVertical: 10, borderWidth: 0, backgroundColor: 'black', margin: 20},
-    submitText: {fontSize: 18,  color: 'white', alignSelf: 'center', marginVertical: 10}
+    buttonText: { color: 'white', fontFamily: 'Avenir', fontWeight: '500' },
+    buttonLogin: { height: 50, borderRadius: 20, borderWidth: 1, borderColor: 'black', backgroundColor: 'black', margin: 20 },
+    boxLogin: { backgroundColor: 'white', borderRadius: 10, marginTop: 5, marginLeft: 20, marginRight: 20 },
+    textBody: { textAlign: 'center', alignItems: 'center', fontSize: 16 },
+    boxinput: { backgroundColor: 'black' },
+    input: { color: 'white' },
+    container1: { width: '90%', height: 50, borderRadius: 100, marginVertical: 10 },
+    input1: { marginLeft: 5, fontSize: 16 },
+    container3: { width: '90%', height: 50, borderColor: 'black', borderRadius: 10, marginVertical: 10, borderWidth: 0, backgroundColor: 'black', margin: 20 },
+    submitText: { fontSize: 18, color: 'white', alignSelf: 'center', marginVertical: 10 },
+    alertmess: { height: 40, alignItems: 'center', justifyContent: 'center'}
 });
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setUser: (username, password) => {
+            dispatch(actions.saveUser(username, password));
+        }
+    }
+}
+
+
+export default connect(null, mapDispatchToProps)(Login);

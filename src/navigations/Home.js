@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Main from './Main';
-import User from '../components/User';
 import Login from "../screens/Login";
 import SignUp from "../screens/SignUp";
 import Language from '../screens/Language';
@@ -41,11 +40,6 @@ class Home extends Component {
                     component={Main}
                 />
 
-                <Stack.Screen
-                    name = 'User'
-                    component={User}
-                />
-     
                 <Stack.Screen
                     name = 'Login'
                     component={Login}

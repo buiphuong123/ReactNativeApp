@@ -6,3 +6,17 @@ export const changeLanguage = language => {
         language
     }
 }
+export const saveUser = (username, password)=>{
+    return {
+        type: types.SAVE_USER,
+        username,
+        password
+    }
+}
+
+export const logoutUser = (username)=>{
+    return {
+        type: types.SAVE_USER,
+        username,
+    }
+}
