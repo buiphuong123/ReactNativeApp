@@ -14,9 +14,13 @@ class Home extends Component {
     getData = async () => {
         try {
           const value = await AsyncStorage.getItem('@storage_key')
+          const valueuser = await AsyncStorage.getItem('@user')
           if(value !== null) {
             this.props.setLanguage(value);
           } 
+          if(valueuser != null) {
+              this.props.setUser(valueuser);
+          }
         } catch(e) {
            console.log('get data error', e);
         }
@@ -63,6 +67,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setLanguage: language => {
             dispatch(actions.changeLanguage(language));
+        },
+        setUser: (username) => {
+            dispatch(actions.saveUser(username));
         }
     };
 };

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import japan from '../../res/images/japan.png';
-import vn from '../../res/images/vn.jpg';
 import english from '../../res/images/english.png';
+import vn from '../../res/images/vn.jpg';
 
 
 import AppText from '../components/app-text';
@@ -33,7 +32,7 @@ class Language extends Component {
                 <AppText i18nKey={'this-is-home-page'}>This is home screen</AppText>
                 <Text style={{alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', alignItems: 'center', padding: 20, fontSize: 18}}> CHOOSE LANGUAGE</Text>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center', alignItems: "center"}}>
-                    <Image source={japan} style={styles.image} />
+                    <Image source={english} style={styles.image} />
                     <TouchableOpacity style={styles.language}>
                         <Text>japan</Text>
                     </TouchableOpacity>

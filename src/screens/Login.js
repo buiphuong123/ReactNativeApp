@@ -6,7 +6,7 @@ import AppText from '../components/app-text';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from './../redux/actions/index';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Account from './Account';
 class Login extends Component {
@@ -19,6 +19,18 @@ class Login extends Component {
             password: '',
             successmess: '',
             errormess: '',
+            errorusername: '',
+            errorpassword: '',
+        }
+    }
+    value = this.props.username;
+    setUsersave = async (value) => {
+        console.log('luu user ' + value);
+        try {
+            await AsyncStorage.setItem('@user', value);
+            console.log('save user okkkk');
+        } catch (e) {
+            console.log('error save user');
         }
     }
 
@@ -32,53 +44,68 @@ class Login extends Component {
     }
 
     Login() {
-        axios.post("https://language-backend.vercel.app/login", {
-            "username": this.state.username,
-            "password": this.state.password,
-        }, {
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-        })
-            .then((response) => {
-                console.log(response.data);
-                this.setState({ successmess: response.data.message });
-                this.setState({ errormess: response.data.error });
-                setTimeout(() => {
-                    this.setState({ successmess: '' });
-                    this.setState({ errormess: '' });
-                }, 2000);
-                // this.setState({result: response.data.id})  // ket qua tra ve 
-                console.log('email' + response.data.mail);
-                if (response.data.message != undefined) {
-                    this.props.setUser(this.state.username, this.state.password);
-                    setTimeout(() => {
-                        this.props.navigation.navigate("Contact");
-                    }, 2000)
-
-
-
-                }
+        const { username, password } = this.state;
+        if (username == '' || password == '' || password.length <= 3) {
+            if (username == '') {
+                this.setState({ errorusername: 'username required' });
+            }
+            if (password.length <= 3) {
+                this.setState({ errorpassword: 'password must longer 3' });
+            }
+            if (password == '' && password.length <= 3) {
+                this.setState({ errorpassword: 'password required' });
+            }
+        }
+        else {
+            axios.post("https://language-backend.vercel.app/login", {
+                "username": this.state.username,
+                "password": this.state.password,
+            }, {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
             })
-            .catch((error) => { console.log(error)});
+                .then((response) => {
+                    console.log(response.data);
+                    this.setState({ successmess: response.data.message });
+                    this.setState({ errormess: response.data.error });
+                    setTimeout(() => {
+                        this.setState({ successmess: '' });
+                        this.setState({ errormess: '' });
+                    }, 2000);
+                    // this.setState({result: response.data.id})  // ket qua tra ve 
+                    if (response.data.message != undefined) {
+                        this.props.setUser(this.state.username, this.state.password);
+                        this.setUsersave(this.state.username);
+                        setTimeout(() => {
+                            this.props.navigation.navigate("Contact");
+                        }, 2000)
+
+
+
+                    }
+                })
+                .catch((error) => { console.log(error) });
+        }
     }
+
 
     render() {
         const { navigation } = this.props;
         const sucessmessage = (
-            <View style={[styles.alertmess, {backgroundColor: "blue"}]}>
-                <Text style={{color: 'white'}}>{this.state.successmess}</Text>
+            <View style={[styles.alertmess, { backgroundColor: "blue" }]}>
+                <Text style={{ color: 'white' }}>{this.state.successmess}</Text>
             </View>
         );
         const errormessage = (
-            <View style={[styles.alertmess, {backgroundColor: "red"}]}>
-                <Text style={{color: 'white'}}>{this.state.errormess}</Text>
+            <View style={[styles.alertmess, { backgroundColor: "red" }]}>
+                <Text style={{ color: 'white' }}>{this.state.errormess}</Text>
             </View>
         );
         return (
-            <ScrollView style={{ backgroundColor: 'black', }} contentContainerStyle={{flex: 1 }}>
-                <View style={{ justifyContent: 'space-around'}}>
+            <ScrollView style={{ backgroundColor: 'black', }} contentContainerStyle={{ flex: 1 }}>
+                <View style={{ justifyContent: 'space-around' }}>
                     <View style={styles.container}>
                         <TouchableOpacity onPress={() => navigation.goBack()}>
                             <Icon name="md-chevron-back" size={28} color='white' style={{ marginTop: 20, marginLeft: 10 }} />
@@ -92,7 +119,7 @@ class Login extends Component {
                     </View>
 
                     <View style={styles.boxLogin}>
-                        <View style={[styles.container1, { borderColor: this.state.isFocused ? '#0779ef' : 'black' }]}>
+                        <View style={styles.container1}>
                             <Input
                                 placeholder='username'
                                 inputStyle={styles.input1}
@@ -107,8 +134,16 @@ class Login extends Component {
                                 }
                             />
                         </View>
+                        {this.state.errorusername == '' ?
+                            null
+                            :
+                            <View style={{ marginLeft: 10 }}>
+                                <Text style={{ color: 'red' }}>{this.state.errorusername}</Text>
+                            </View>
+                        }
 
-                        <View style={[styles.container1, { borderColor: this.state.isFocused ? '#0779ef' : 'black' }]}>
+
+                        <View style={styles.container1}>
                             <Input
                                 placeholder='password'
                                 inputStyle={styles.input1}
@@ -133,6 +168,13 @@ class Login extends Component {
                                 }
                             />
                         </View>
+                        {this.state.errorpassword == '' ?
+                            null
+                            :
+                            <View style={{ marginLeft: 10 }}>
+                                <Text style={{ color: 'red' }}>{this.state.errorpassword}</Text>
+                            </View>
+                        }
 
 
                         <View style={{ width: '90%' }}>
@@ -141,8 +183,8 @@ class Login extends Component {
                         <TouchableOpacity style={[styles.container3, { backgroundColor: "black" }]} onPress={this.Login.bind(this)}>
                             <AppText i18nKey={"Login"} style={styles.submitText}>Login</AppText>
                         </TouchableOpacity>
-                        <AppText i18nKey={'account'} style={'styles.textBody'} >Or connect using</AppText>
-                        <View style={{ flexDirection: "row" }}>
+                        <AppText i18nKey={'account'} style={styles.textBody} >Or connect using</AppText>
+                        <View style={{ flexDirection: "row", }}>
                             <Account color="#3b5c8f" icon="facebook" title="Facebook" />
                             <Account color="#ec482f" icon="google" title="Google" />
                         </View>
@@ -152,11 +194,11 @@ class Login extends Component {
                         </TouchableOpacity>
 
                     </View>
-                        {this.state.errormess == ''|| this.state.errormess == undefined? null : errormessage}
-                        {this.state.successmess == '' || this.state.successmess == undefined ? null : sucessmessage}
-                       
+                    {this.state.errormess == '' || this.state.errormess == undefined ? null : errormessage}
+                    {this.state.successmess == '' || this.state.successmess == undefined ? null : sucessmessage}
+
                 </View>
-                
+
 
             </ScrollView>
         )
@@ -173,18 +215,27 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     buttonText: { color: 'white', fontFamily: 'Avenir', fontWeight: '500' },
-    buttonLogin: { height: 50, borderRadius: 20, borderWidth: 1, borderColor: 'black', backgroundColor: 'black', margin: 20 },
-    boxLogin: { backgroundColor: 'white', borderRadius: 10, marginTop: 5, marginLeft: 20, marginRight: 20 },
+    buttonLogin: { height: 50, borderRadius: 20, borderWidth: 1, borderColor: 'black', backgroundColor: 'black', },
+    boxLogin: { backgroundColor: 'white', borderRadius: 10, marginLeft: 20, marginRight: 20 },
     textBody: { textAlign: 'center', alignItems: 'center', fontSize: 16 },
     boxinput: { backgroundColor: 'black' },
     input: { color: 'white' },
     container1: { width: '90%', height: 50, borderRadius: 100, marginVertical: 10 },
     input1: { marginLeft: 5, fontSize: 16 },
-    container3: { width: '90%', height: 50, borderColor: 'black', borderRadius: 10, marginVertical: 10, borderWidth: 0, backgroundColor: 'black', margin: 20 },
+    container3: { width: '90%', height: 50, borderColor: 'black', borderRadius: 10, marginVertical: 10, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center', marginLeft: 15 },
     submitText: { fontSize: 18, color: 'white', alignSelf: 'center', marginVertical: 10 },
-    alertmess: { height: 40, alignItems: 'center', justifyContent: 'center'}
+    alertmess: { height: 40, alignItems: 'center', justifyContent: 'center' },
+    errorMsg: {
+        color: '#FF0000',
+        fontSize: 14,
+    },
 });
 
+const mapStateToProps = state => {
+    return {
+        username: state.userReducer.username,
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -195,4 +246,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

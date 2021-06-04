@@ -17,7 +17,7 @@ class AppText extends Component {
 		
 	}
 
-	componentDidUpdate = nextProps => {
+	componentWillReceiveProps = nextProps => {
 		const { language } = nextProps;
 		if (language) this.setMainLocaleLanguage(language);
 	}

@@ -32,18 +32,19 @@ export default class Cart extends Component {
     })
 }
 flipCard(){
-    console.log('ok nha');
     if (this.value >= 90 ) {
         Animated.timing(this.animatedValue, {
             toValue: 0,
             friction: 8,
-            tension: 10
+            tension: 10,
+            useNativeDriver: true,
         }).start();
     } else {
         Animated.timing(this.animatedValue, {
             toValue: 180,
             friction: 8,
-            tension: 10
+            tension: 10,
+            useNativeDriver: true,
         }).start();
     }
     
@@ -79,24 +80,23 @@ flipCard(){
                 <CardItem cardBody>
                   {/* <Image style={{ height: 300, flex: 1 }} source={item.image} /> */}
                   <View style={styles.container}>
-                <View>
-                    <Animated.View style={[styles.flipCard, frontAnimateStyle]}>
-                        <Text style={styles.flipText}>
-                            This text is flipping on the front
-                        </Text>
-                    </Animated.View>
-                    
-                    <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-                        <Text style={styles.flipText}>
-                            this text is flipping on the back
-                        </Text>
-                    </Animated.View>
+                      <View>
+                          <TouchableOpacity onPress={this.flipCard.bind(this)}>
+                              <Animated.View style={[frontAnimateStyle, styles.flipCard]}>
+                                  <Text style={styles.flipText}>
+                                      This text is flipping on the front
+                                  </Text>
+                              </Animated.View>
 
-                </View>
-                <TouchableOpacity onPress={() => this.flipCard()}>
-                    <Text>Flip</Text>
-                </TouchableOpacity>
-            </View>
+                              <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
+                                  <Text style={styles.flipText}>
+                                      this text is flipping on the back
+                                  </Text>
+                              </Animated.View>
+                          </TouchableOpacity>
+
+                      </View>
+                  </View>
                 </CardItem>
                 <CardItem>
                   <Icon name="heart" style={{ color: '#ED4A6A' }} />
