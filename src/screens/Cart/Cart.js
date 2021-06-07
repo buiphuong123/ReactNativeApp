@@ -1,120 +1,58 @@
-import React, { Component } from 'react';
-import { Image, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import vietnam from '../../../res/images/vietnam.png';
+import React from "react";
+import { View, Dimensions, Text, StyleSheet, Image } from "react-native";
+import Carousel from "react-native-snap-carousel";
 
-import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Body, Icon } from 'native-base';
-const cards = [
-  {
-    text: 'Card One',
-    name: 'One',
-    image: require('../../../res/images/vietnam.png'),
-  },
-  {
-    text: 'Card two',
-    name: 'Two',
-    image: require('../../../res/images/english.png'),
-  },
-];
-export default class Cart extends Component {
-  UNSAFE_componentWillMount() {
-    this.animatedValue = new Animated.Value(0);
-    this.value= 0;
-    this.animatedValue.addListener(({ value })=> {
-        this.value = value;
-    })
-    this.frontInterpolate = this.animatedValue.interpolate({
-        inputRange: [0, 180],
-        outputRange: ['0deg', '180deg']
-    })
-    this.backInterpolate = this.animatedValue.interpolate({
-        inputRange: [0, 180],
-        outputRange: ['180deg', '360deg']
-    })
-}
-flipCard(){
-    if (this.value >= 90 ) {
-        Animated.timing(this.animatedValue, {
-            toValue: 0,
-            friction: 8,
-            tension: 10,
-            useNativeDriver: true,
-        }).start();
-    } else {
-        Animated.timing(this.animatedValue, {
-            toValue: 180,
-            friction: 8,
-            tension: 10,
-            useNativeDriver: true,
-        }).start();
-    }
-    
-}
-  render() {
-    const frontAnimateStyle = {
-      transform: [
-          { rotateY: this.frontInterpolate}
-      ]
-  }
-  const backAnimatedStyle = {
-      transform: [
-          {rotateY: this.backInterpolate}
-      ]
-  }
+const windowWidth = Dimensions.get("window").width;
+
+export default function MyCarousel() {
+  const images = [
+    { id: 1, image: "kkaa" },
+    { id: 2, image: "slid 2" },
+    { id: 3, image: "slid 3" },
+    { id: 4, image: "slid 4" }
+  ];
+
+  const _renderItem = ({ item }) => {
     return (
-      <Container>
-        <Header />
-        <View>
-          <DeckSwiper
-            dataSource={cards}
-            renderItem={item =>
-              <Card style={{ elevation: 3 }}>
-                <CardItem>
-                  {/* <Left>
-                    <Thumbnail source={item.image} />
-                    <Body>
-                      <Text>{item.text}</Text>
-                      <Text note>NativeBase</Text>
-                    </Body>
-                  </Left> */}
-                </CardItem>
-                <CardItem cardBody>
-                  {/* <Image style={{ height: 300, flex: 1 }} source={item.image} /> */}
-                  <View style={styles.container}>
-                      <View>
-                          <TouchableOpacity onPress={this.flipCard.bind(this)}>
-                              <Animated.View style={[frontAnimateStyle, styles.flipCard]}>
-                                  <Text style={styles.flipText}>
-                                      This text is flipping on the front
-                                  </Text>
-                              </Animated.View>
-
-                              <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-                                  <Text style={styles.flipText}>
-                                      this text is flipping on the back
-                                  </Text>
-                              </Animated.View>
-                          </TouchableOpacity>
-
-                      </View>
-                  </View>
-                </CardItem>
-                <CardItem>
-                  <Icon name="heart" style={{ color: '#ED4A6A' }} />
-                  <Text>{item.name}</Text>
-                </CardItem>
-              </Card>
-            }
-          />
-        </View>
-      </Container>
+      <View style={styles.slide}>
+        <Text>{item.image}</Text>
+      </View>
     );
-  }
+  };
+
+  return (
+    <View style={styles.wrapper}>
+      <Carousel
+        data={images}
+        renderItem={_renderItem}
+        sliderWidth={windowWidth}
+        itemWidth={windowWidth - 70}
+        enableMomentum={false}
+        lockScrollWhileSnapping
+        autoplay
+        useScrollView
+        loop
+        autoplayInterval={3000}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  flipCard: {width: 200, height: 200, alignItems: 'center', justifyContent: 'center', backgroundColor: 'blue', backfaceVisibility: 'hidden'},
-  flipCardBack: {backgroundColor: 'red', position: 'absolute', top: 0},
-  flipText: {color: 'white'}
-
-})
+  wrapper: {
+    height: 150
+  },
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff"
+  },
+  image: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});

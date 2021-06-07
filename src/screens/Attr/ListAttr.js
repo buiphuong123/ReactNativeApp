@@ -3,8 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Animated } from '
 const {width: WIDTH}= Dimensions.get('window');
 const {height: HEIGHT}= Dimensions.get('window');
 import Icon from 'react-native-vector-icons/Ionicons';
+import Carousel from "react-native-snap-carousel";
+const windowWidth = Dimensions.get("window").width;
+
 
 export default class ListAttr extends Component{
+   
     UNSAFE_componentWillMount() {
         this.animatedValue = new Animated.Value(0);
         this.value= 0;
@@ -39,6 +43,12 @@ export default class ListAttr extends Component{
 
     }
     render() {
+        const images = [
+            { id: 1, image: "kkaa" },
+            { id: 2, image: "slid 2" },
+            { id: 3, image: "slid 3" },
+            { id: 4, image: "slid 4" }
+          ];
         const frontAnimateStyle = {
             transform: [
                 { rotateY: this.frontInterpolate}
@@ -49,8 +59,9 @@ export default class ListAttr extends Component{
                 {rotateY: this.backInterpolate}
             ]
         }
-         return(
-            <View style={styles.container}>
+        const _renderItem = ({ item }) => {
+            return (
+                <View style={styles.container}>
                 <View>
                     <TouchableOpacity onPress={this.flipCard.bind(this)}>
                         <Animated.View style={[frontAnimateStyle, styles.flipCard]}>
@@ -115,6 +126,23 @@ export default class ListAttr extends Component{
                     </TouchableOpacity>
                 </View>
             </View>
+            );
+          };
+         return(
+            <View style={styles.wrapper}>
+      <Carousel
+        data={images}
+        renderItem={_renderItem}
+        sliderWidth={windowWidth}
+        itemWidth={windowWidth - 70}
+        enableMomentum={false}
+        lockScrollWhileSnapping
+        autoplay
+        useScrollView
+        loop
+        autoplayInterval={3000}
+      />
+    </View>
         )
     }
 }
@@ -128,5 +156,7 @@ const styles = StyleSheet.create({
     flashcardStyletop: {height: HEIGHT/5, backgroundColor: 'white', flex: 2},
     flashcardStyledowm: {flex: 1, backgroundColor: 'gray', flexDirection: 'column', justifyContent: 'space-around'},
     keepStyle: { height: 40, width: 100, alignItems: 'center', justifyContent: 'center', borderRadius: 5},
-
+    wrapper: {
+        height: 150
+      },
 })

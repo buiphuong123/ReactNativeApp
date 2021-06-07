@@ -98,7 +98,7 @@ export default class SignUp extends Component {
             </View>
         );
         return (
-            <ScrollView style={{ backgroundColor: 'black', }} contentContainerStyle={{ flex: 1 }}>
+            <ScrollView style={{ backgroundColor: 'black', }}>
                 <View style={styles.container}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Icon name="md-chevron-back" size={28} color='white' style={{ marginTop: 20, marginLeft: 10 }} />

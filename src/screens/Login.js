@@ -104,7 +104,7 @@ class Login extends Component {
             </View>
         );
         return (
-            <ScrollView style={{ backgroundColor: 'black', }} contentContainerStyle={{ flex: 1 }}>
+            <ScrollView style={{ backgroundColor: 'black', }}>
                 <View style={{ justifyContent: 'space-around' }}>
                     <View style={styles.container}>
                         <TouchableOpacity onPress={() => navigation.goBack()}>

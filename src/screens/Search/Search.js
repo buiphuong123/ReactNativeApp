@@ -19,7 +19,8 @@ const cards = [
         vn: "mọi người",
     },
 ];
-export default class Cart extends Component {
+
+class Item extends Component {
     UNSAFE_componentWillMount() {
         this.animatedValue = new Animated.Value(0);
         this.value = 0;
@@ -35,8 +36,8 @@ export default class Cart extends Component {
             outputRange: ['180deg', '360deg']
         })
     }
-    flipCard() {
-        if (this.value >= 90) {
+    flipCard = () => {
+        if (this.value >= 90){
             Animated.timing(this.animatedValue, {
                 toValue: 0,
                 friction: 8,
@@ -53,7 +54,8 @@ export default class Cart extends Component {
         }
 
     }
-    render() {
+    render () {
+        const {item} = this.props;
         const frontAnimateStyle = {
             transform: [
                 { rotateY: this.frontInterpolate }
@@ -65,87 +67,95 @@ export default class Cart extends Component {
             ]
         }
         return (
+            <Card style={{ elevation: 3, height: HEIGHT, backgroundColor: '#f5f5f0' }}>
+                {/* <CardItem>
+                    
+                </CardItem> */}
+                {/* <CardItem> */}
+                    {/* <Image style={{ height: 300, flex: 1 }} source={item.image} /> */}
+                    <View style={styles.container}>
+                        <View>
+                            <TouchableOpacity onPress={() =>this.flipCard()}>
+                                <Animated.View style={[frontAnimateStyle, styles.flipCard]}>
+                                    <View style={[styles.flashcardStyle, styles.flashcardStyletop]}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                            <TouchableOpacity>
+                                                <Icon style={{ marginTop: 13, marginLeft: 15, color: '#4d88ff' }} name="feedback" size={28} />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity>
+                                                <Icon style={{ marginTop: 13, marginRight: 15, color: '#4d88ff' }} name="settings" size={28} />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View />
+                                        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 4 }}>
+                                            <Text style={styles.flipText1}>
+                                                {item.hira}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View style={[styles.flashcardStyle, styles.flashcardStyledowm]}>
+                                        <Icon style={{ marginLeft: (WIDTH - 50) / 2, marginTop: -70, alignItems: 'center', color:'#999999'  }} name="volume-up" size={45} />
+                                        <Text style={{ marginLeft: (WIDTH - 50) / 2, marginBottom: -40 }}>1/60</Text>
+                                    </View>
+                                </Animated.View>
+
+                                <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
+                                    <View style={[styles.flashcardStyle, styles.flashcardStyletop]}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+                                            <TouchableOpacity>
+                                                <Icon style={{ marginTop: 13, marginLeft: 15, color: '#4d88ff' }} name="feedback" size={28} />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity>
+                                                <Icon style={{ marginTop: 13, marginRight: 15, color: '#4d88ff' }} name="settings" size={28} />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View />
+                                        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 3 }}>
+                                            <Text style={styles.flipText1}>
+                                            {item.vn}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View style={[styles.flashcardStyle, styles.flashcardStyledowm], { flex: 4 }}>
+                                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginTop: -30, flex: 1 }}>
+                                            <Icon style={{ color:'#999999'}} name="volume-up" size={45} />
+                                        </TouchableOpacity>
+                                        <View style={{ flex: 4, width: WIDTH - 50, alignItems: 'center', justifyContent: 'center' }}>
+                                            <Text style={{ fontSize: 30 }}>{item.kanji}</Text>
+                                            <Text style={{ fontSize: 20 }}>{item.hira}</Text>
+                                            <Text style={{ fontSize: 20 }}>{item.vn}</Text>
+                                        </View>
+                                    </View>
+                                </Animated.View>
+                            </TouchableOpacity>
+
+                        </View>
+                        <View style={styles.stylebutton}>
+                            <TouchableOpacity style={[styles.keepStyle, { backgroundColor: '#ff0000', marginRight: 110 }]}>
+                                <Text>memized</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.keepStyle, { backgroundColor: '#5cd65c', }]}>
+                                <Text>memized</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                {/* </CardItem> */}
+                
+            </Card>
+        );
+    };
+}
+
+export default class Search extends Component {
+    render() {
+        return (
             <Container>
                 <View>
                     <DeckSwiper
                         dataSource={cards}
-                        renderItem={item =>
-                            <Card style={{ elevation: 3, height: HEIGHT, backgroundColor: '#f5f5f0' }}>
-                                {/* <CardItem>
-                                   
-                                </CardItem> */}
-                                {/* <CardItem> */}
-                                    {/* <Image style={{ height: 300, flex: 1 }} source={item.image} /> */}
-                                    <View style={styles.container}>
-                                        <View>
-                                            <TouchableOpacity onPress={this.flipCard.bind(this)}>
-                                                <Animated.View style={[frontAnimateStyle, styles.flipCard]}>
-                                                    <View style={[styles.flashcardStyle, styles.flashcardStyletop]}>
-                                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                                            <TouchableOpacity>
-                                                                <Icon style={{ marginTop: 13, marginLeft: 15, color: '#4d88ff' }} name="feedback" size={28} />
-                                                            </TouchableOpacity>
-                                                            <TouchableOpacity>
-                                                                <Icon style={{ marginTop: 13, marginRight: 15, color: '#4d88ff' }} name="settings" size={28} />
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                        <View />
-                                                        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 4 }}>
-                                                            <Text style={styles.flipText1}>
-                                                                {item.hira}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View style={[styles.flashcardStyle, styles.flashcardStyledowm]}>
-                                                        <Icon style={{ marginLeft: (WIDTH - 50) / 2, marginTop: -70, alignItems: 'center', color:'#999999'  }} name="volume-up" size={45} />
-                                                        <Text style={{ marginLeft: (WIDTH - 50) / 2, marginBottom: -40 }}>1/60</Text>
-                                                    </View>
-                                                </Animated.View>
-
-                                                <Animated.View style={[backAnimatedStyle, styles.flipCard, styles.flipCardBack]}>
-                                                    <View style={[styles.flashcardStyle, styles.flashcardStyletop]}>
-                                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-                                                            <TouchableOpacity>
-                                                                <Icon style={{ marginTop: 13, marginLeft: 15, color: '#4d88ff' }} name="feedback" size={28} />
-                                                            </TouchableOpacity>
-                                                            <TouchableOpacity>
-                                                                <Icon style={{ marginTop: 13, marginRight: 15, color: '#4d88ff' }} name="settings" size={28} />
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                        <View />
-                                                        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 3 }}>
-                                                            <Text style={styles.flipText1}>
-                                                                {item.vn}
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View style={[styles.flashcardStyle, styles.flashcardStyledowm], { flex: 4 }}>
-                                                        <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', marginTop: -30, flex: 1 }}>
-                                                            <Icon style={{ color:'#999999'}} name="volume-up" size={45} />
-                                                        </TouchableOpacity>
-                                                        <View style={{ flex: 4, width: WIDTH - 50, alignItems: 'center', justifyContent: 'center' }}>
-                                                            <Text style={{ fontSize: 30 }}>{item.kanji}</Text>
-                                                            <Text style={{ fontSize: 20 }}>{item.hira}</Text>
-                                                            <Text style={{ fontSize: 20 }}>{item.vn}</Text>
-                                                        </View>
-                                                    </View>
-                                                </Animated.View>
-                                            </TouchableOpacity>
-
-                                        </View>
-                                        <View style={styles.stylebutton}>
-                                            <TouchableOpacity style={[styles.keepStyle, { backgroundColor: '#ff0000', marginRight: 110 }]}>
-                                                <Text>memized</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={[styles.keepStyle, { backgroundColor: '#5cd65c', }]}>
-                                                <Text>memized</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-
-                                {/* </CardItem> */}
-                                
-                            </Card>
+                        renderItem={(item, index) =>
+                            <Item item={item} />
                         }
                     />
                 </View>
