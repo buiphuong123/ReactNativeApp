@@ -25,10 +25,18 @@ class Login extends Component {
     }
     value = this.props.username;
     setUsersave = async (value) => {
-        console.log('luu user ' + value);
         try {
             await AsyncStorage.setItem('@user', value);
             console.log('save user okkkk');
+        } catch (e) {
+            console.log('error save user');
+        }
+    }
+    // luu obj user in localstorage
+    objectUsersave = async (value) => {
+        try {
+            const valuesaver = JSON.stringify(value);
+            await AsyncStorage.setItem('@userIf', valuesaver);
         } catch (e) {
             console.log('error save user');
         }
@@ -57,7 +65,7 @@ class Login extends Component {
             }
         }
         else {
-            axios.post("https://language-backend.vercel.app/login", {
+            axios.post("http://192.168.1.8:3001/login", {
                 "username": this.state.username,
                 "password": this.state.password,
             }, {
@@ -67,7 +75,7 @@ class Login extends Component {
                 },
             })
                 .then((response) => {
-                    console.log(response.data);
+                    console.log('data user' + response.data.user);
                     this.setState({ successmess: response.data.message });
                     this.setState({ errormess: response.data.error });
                     setTimeout(() => {
@@ -78,6 +86,7 @@ class Login extends Component {
                     if (response.data.message != undefined) {
                         this.props.setUser(this.state.username, this.state.password);
                         this.setUsersave(this.state.username);
+                        this.objectUsersave(response.data.user);
                         setTimeout(() => {
                             this.props.navigation.navigate("Contact");
                         }, 2000)

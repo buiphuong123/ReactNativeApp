@@ -13,7 +13,6 @@ class ListWord extends Component{
       showWord= () => {
         axios.get("https://language-backend.vercel.app/getWord")
         .then(response => {
-            // console.log(response);
             this.setState({WordSr: response.data.wordData});
         })
         .catch(error => {

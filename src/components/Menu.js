@@ -155,10 +155,10 @@ class Menu extends Component {
 
 var styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: 'black' },
-    header: { flex: 1, flexDirection: 'row', marginTop: 0, marginLeft: 20 },
+    header: { flex: 1, flexDirection: 'row', marginTop: 20, marginLeft: 20 },
     footer: { flex: 8, backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingVertical: 10, paddingHorizontal: 0 },
     image: { height: 45, width: 50 , borderRadius: 30},
-    setaccount: { marginLeft: 20, },
+    setaccount: { marginLeft: 20 },
     account: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
     login: { color: '#fff', marginRight: 10 },
     button: { width: 500 },
@@ -224,4 +224,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);
-

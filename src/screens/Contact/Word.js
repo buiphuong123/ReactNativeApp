@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
 const { width: WIDTH } = Dimensions.get('window');
-export default function Word(props) {
+function Word(props) {
   const { word, count } = props;
+ 
   return (
     <View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: '#999999', marginTop: 5, width: WIDTH }}>
@@ -44,4 +46,11 @@ const styles = StyleSheet.create({
   word: {marginRight: 10, color: "blue" },
   star: {color: '#999999', marginRight: 10},
   check: { marginRight: 10, color: '#999999' },
-})
+});
+
+const mapStateToProps = state => {
+	return {
+		userId: state.userReducer.id,
+	}
+};
+export default connect(mapStateToProps, null)(Word);

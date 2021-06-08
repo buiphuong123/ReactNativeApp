@@ -15,6 +15,9 @@ class Home extends Component {
         try {
           const value = await AsyncStorage.getItem('@storage_key')
           const valueuser = await AsyncStorage.getItem('@user')
+          const userIf = await AsyncStorage.getItem('@userIf')
+          userIfor = userIf != null ? JSON.parse(userIf) : null;
+          console.log('username= ' + userIfor.username);
           if(value !== null) {
             this.props.setLanguage(value);
           } 
