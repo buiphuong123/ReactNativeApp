@@ -23,15 +23,7 @@ class Login extends Component {
             errorpassword: '',
         }
     }
-    value = this.props.username;
-    setUsersave = async (value) => {
-        try {
-            await AsyncStorage.setItem('@user', value);
-            console.log('save user okkkk');
-        } catch (e) {
-            console.log('error save user');
-        }
-    }
+    
     // luu obj user in localstorage
     objectUsersave = async (value) => {
         try {
@@ -82,11 +74,11 @@ class Login extends Component {
                         this.setState({ successmess: '' });
                         this.setState({ errormess: '' });
                     }, 2000);
-                    // this.setState({result: response.data.id})  // ket qua tra ve 
                     if (response.data.message != undefined) {
-                        this.props.setUser(this.state.username, this.state.password);
-                        this.setUsersave(this.state.username);
-                        this.objectUsersave(response.data.user);
+                        this.props.setUser(response.data.user._id, this.state.username, response.data.user.email);
+                        AsyncStorage.setItem('@id', response.data.user._id);
+                        AsyncStorage.setItem('@username', this.state.username);
+                        AsyncStorage.setItem('@email', response.data.user.email);
                         setTimeout(() => {
                             this.props.navigation.navigate("Contact");
                         }, 2000)
@@ -240,19 +232,15 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = state => {
-    return {
-        username: state.userReducer.username,
-    };
-};
+
 
 const mapDispatchToProps = dispatch => {
     return {
-        setUser: (username, password) => {
-            dispatch(actions.saveUser(username, password));
+        setUser: (id, username, email) => {
+            dispatch(actions.saveUser(id, username, email));
         }
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
