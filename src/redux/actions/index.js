@@ -16,7 +16,7 @@ export const saveUser = (id, username, email)=>{
 }
 export const logoutUser = (username)=>{
     return {
-        type: types.SAVE_USER,
+        type: types.LOGOUT_USER,
         username,
     }
 }
@@ -72,5 +72,29 @@ export const RemoteLikeWord = (isLike)=> {
     return {
         type: types.ALL_LIKE,
         isLike
+    }
+}
+export const showCard = (cartwordAttr)=> {
+    return {
+        type: types.SHOW_CARD,
+        cartwordAttr
+    }
+}
+export const showLike = (likewordAttr) => {
+    return {
+        type: types.SHOW_LIKE,
+        likewordAttr
+    }
+}
+export const showNotMemerize = (memerizewordAttr) => {
+    return {
+        type: types.SHOW_NOT_MEMERIZE,
+        memerizewordAttr
+    }
+}
+export const showWordNotMemerize = (notmemerizewordAttr) => {
+    return {
+        type: types.SHOW_WORD_NOT_MEMERIZE,
+        notmemerizewordAttr
     }
 }

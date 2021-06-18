@@ -13,7 +13,9 @@ var userReducer = (state = userAttr, action) => {
         }
         case types.LOGOUT_USER: {
             return {
-                username: action.username
+                id: action.id,
+                username: action.username,
+                email: action.email,
             }
         }
         default:

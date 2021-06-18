@@ -6,11 +6,46 @@ import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions/index';
 
-
 class Contact extends Component  {
+    seletwordall(value){
+        this.props.setAllword(value);
+        if(value===true) {
+            this.props.setMemerizeword(false);
+            this.props.setNotMemerizeword(false);
+            this.props.setLikeword(false);
+        }
+        
+    }
+    seletMemerizedall(value){
+        this.props.setMemerizeword(value);
+        if(value===true) {
+            this.props.setAllword(false);
+            this.props.setNotMemerizeword(false);
+            this.props.setLikeword(false);
+        }
+        
+    }
+    seletNotMemerizedall(value){
+        this.props.setNotMemerizeword(value);
+        if(value===true) {
+            this.props.setAllword(false);
+            this.props.setMemerizeword(false);
+            this.props.setLikeword(false);
+        }
+        
+    }
+    seletLikeall(value){
+        this.props.setLikeword(value);
+        if(value===true) {
+            this.props.setAllword(false);
+            this.props.setMemerizeword(false);
+            this.props.setNotMemerizeword(false);
+        }
+        
+    }
     render() {
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <Header
                     placement="left"
                     leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -19,18 +54,15 @@ class Contact extends Component  {
                 />
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.checkboxContainer}>
-                    {/* <Text>{`[value: ${this.state.isWord}]`}</Text> */}
                         <CheckBox
-                         disabled={false}
                             style={styles.checkbox}
-                            value={this.props.isWord}
+                            value={ this.props.isWord}
                             onValueChange={(value) => this.props.setword(value)}
                         />
                         <Text style={styles.label}>Tu</Text>
                     </View>
 
                     <View style={styles.checkboxContainer}>
-                    {/* <Text>{`[value: ${this.state.isHira}]`}</Text> */}
                         <CheckBox
                             style={styles.checkbox}
                             value={this.props.isHira}
@@ -71,7 +103,7 @@ class Contact extends Component  {
                         <CheckBox
                             style={styles.checkbox}
                             value={this.props.isAll}
-                            onValueChange={(value) => this.props.setAllword(value)}
+                            onValueChange={(value) => this.seletwordall(value)}
 
                         />
                         <Text style={styles.label}>Tat ca</Text>
@@ -81,31 +113,31 @@ class Contact extends Component  {
                         <CheckBox
                             style={styles.checkbox}
                             value={this.props.isMemerize}
-                            onValueChange={(value) => this.props.setMeanword(value)}
+                            onValueChange={(value) => this.seletMemerizedall(value)}
                         />
-                        <Text style={styles.label}>Chua nho</Text>
+                        <Text style={styles.label}>da nho</Text>
                     </View>
 
                     <View style={styles.checkboxContainer}>
                         <CheckBox
                             style={styles.checkbox}
                             value={this.props.isNotMemerize}
-                            onValueChange={(value) => this.props.setNotMemerizeword(value)}
+                            onValueChange={(value) => this.seletNotMemerizedall(value)}
                         />
-                        <Text style={styles.label}>Da nho</Text>
+                        <Text style={styles.label}>chua nho</Text>
                     </View>
                     <View style={styles.checkboxContainer}>
                         <CheckBox
                             style={styles.checkbox}
                             value={this.props.isLike}
                             checked={this.props.isLike}
-                            onValueChange={(value) => this.props.setLikeword(value)}
+                            onValueChange={(value) => this.seletLikeall(value)}
                         />
                         <Text style={styles.label}>Thich</Text>
                     </View>
 
                 </View>
-                <View>
+                <View style={{flex: 1}}>
                     <ListWord  />
                 </View>
 

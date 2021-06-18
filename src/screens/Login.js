@@ -7,7 +7,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from './../redux/actions/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import Account from './Account';
 class Login extends Component {
     constructor(props) {
@@ -67,7 +66,6 @@ class Login extends Component {
                 },
             })
                 .then((response) => {
-                    console.log('data user' + response.data.user);
                     this.setState({ successmess: response.data.message });
                     this.setState({ errormess: response.data.error });
                     setTimeout(() => {
@@ -75,9 +73,9 @@ class Login extends Component {
                         this.setState({ errormess: '' });
                     }, 2000);
                     if (response.data.message != undefined) {
-                        this.props.setUser(response.data.user._id, this.state.username, response.data.user.email);
+                        this.props.setUser(response.data.user._id, response.data.user.username, response.data.user.email);
                         AsyncStorage.setItem('@id', response.data.user._id);
-                        AsyncStorage.setItem('@username', this.state.username);
+                        AsyncStorage.setItem('@username', response.data.user.username);
                         AsyncStorage.setItem('@email', response.data.user.email);
                         setTimeout(() => {
                             this.props.navigation.navigate("Contact");

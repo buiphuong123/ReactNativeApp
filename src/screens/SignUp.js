@@ -205,9 +205,6 @@ export default class SignUp extends Component {
                     </ImageBackground>
                     {this.state.errormess == '' || this.state.errormess == undefined ? null : errormessage}
                     {this.state.successmess == '' || this.state.successmess == undefined ? null : sucessmessage}
-
-
-
                 </View>
             </ScrollView>
 

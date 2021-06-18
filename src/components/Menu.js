@@ -23,8 +23,12 @@ class Menu extends Component {
         }
     }
     logout = (value) => {
-        this.props.setUserLogout(value);
+        this.props.setUserLogout(value, value, value);
+        AsyncStorage.setItem('@id', '');
         AsyncStorage.setItem('@username', '');
+        AsyncStorage.setItem('@email', '');
+        this.props.setUserLike([]);
+        this.props.setUserMemerize([]);
     }
     openedit = () => {
         this.setState({ modalVisible: true });
@@ -266,8 +270,14 @@ const mapDispatchToProps = dispatch => {
         setUser: (id, username, email) =>{
             dispatch(actions.saveUser(id, username, email));
         }, 
-        setUserLogout: username => {
-            dispatch(actions.logoutUser(username));
+        setUserLogout: (id, username, email) => {
+            dispatch(actions.logoutUser(id, username, email));
+        },
+        setUserLike: (likewordAttr) => {
+            dispatch(actions.showLike(likewordAttr));
+        },
+        setUserMemerize: (memerizewordAttr) => {
+            dispatch(actions.showNotMemerize(memerizewordAttr));
         }
     }
 }

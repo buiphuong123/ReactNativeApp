@@ -21,7 +21,7 @@ var wordReducer = (state = wordAc, action) => {
         }
         case types.ALL_WORD: {
             return { 
-                // ...state,
+                ...state,
                 isAll: action.isAll,
             };
         }

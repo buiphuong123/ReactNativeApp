@@ -1,5 +1,6 @@
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SAVE_USER = 'SAVE_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
 export const WORD = 'WORD';
 export const ALL_WORD = 'ALL_WORD';
 export const ALL_HIRA = 'ALL_HIRA';
@@ -9,3 +10,7 @@ export const ALL_REVERSE = 'ALL_REVERSE';
 export const ALL_MEMERIZE = 'ALL_MEMERIZE';
 export const ALL_NOTMEMERIZE = 'ALL_NOTMEMERIZE';
 export const ALL_LIKE = 'ALL_LIKE';
+export const SHOW_CARD = 'SHOW_CARD';
+export const SHOW_LIKE = 'SHOW_LIKE';
+export const SHOW_NOT_MEMERIZE = 'SHOW_NOT_MEMERIZE';
+export const SHOW_WORD_NOT_MEMERIZE = 'SHOW_WORD_NOT_MEMERIZE';
