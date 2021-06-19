@@ -39,7 +39,7 @@ class Menu extends Component {
             this.setState({ errors: Validation(this.state.usernames) });
         }
         else {
-            axios.put("http://192.168.1.8:3001/updateUser/" + id, {
+            axios.put("https://language-backend.vercel.app/updateUser/" + id, {
                 "username": this.state.usernames,
                 "username1": this.props.username,
             }, {
@@ -63,7 +63,7 @@ class Menu extends Component {
                         this.setState({ errormess: '' });
                     }, 2000)
                 })
-                .catch((error) => { console.log("http://192.168.1.8:3001/updateUser/" + id, JSON.stringify(error)) });
+                .catch((error) => { console.log("https://language-backend.vercel.app/updateUser/" + id, JSON.stringify(error)) });
         }
     }
 
@@ -109,12 +109,12 @@ class Menu extends Component {
                     <Text style={styles.account}>{this.props.username}</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => this.openedit()}>
-                            <Text style={styles.login}>Edit</Text>
+                            <AppText i18nKey={"Edit"} style={styles.login}></AppText>
                         </TouchableOpacity>
 
                         <Text style={styles.login}>|</Text>
                         <TouchableOpacity onPress={() => this.logout('')}>
-                            <Text style={styles.login}>Logout</Text>
+                            <AppText i18nKey={"Logout"} style={styles.login}>Logout</AppText>
                         </TouchableOpacity>
                     </View>
 

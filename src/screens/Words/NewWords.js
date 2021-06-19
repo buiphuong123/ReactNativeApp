@@ -5,8 +5,8 @@ import ListWord from './ListWord';
 import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/actions/index';
-
-class Contact extends Component  {
+import AppText from '../../components/app-text';
+class NewWords extends Component  {
     seletwordall(value){
         this.props.setAllword(value);
         if(value===true) {
@@ -59,7 +59,7 @@ class Contact extends Component  {
                             value={ this.props.isWord}
                             onValueChange={(value) => this.props.setword(value)}
                         />
-                        <Text style={styles.label}>Tu</Text>
+                        <AppText i18nKey={"word"} style={styles.label} />
                     </View>
 
                     <View style={styles.checkboxContainer}>
@@ -68,7 +68,7 @@ class Contact extends Component  {
                             value={this.props.isHira}
                             onValueChange={(value) => this.props.setHiraword(value)}
                         />
-                        <Text style={styles.label}>Hira</Text>
+                        <AppText i18nKey={"hira"} style={styles.label} />
                     </View>
 
                     <View style={styles.checkboxContainer}>
@@ -77,7 +77,7 @@ class Contact extends Component  {
                             value={this.props.isKanji}
                             onValueChange={(value) => this.props.setKanjiword(value)}
                         />
-                        <Text style={styles.label}>Han viet</Text>
+                        <AppText i18nKey={"kanji"} style={styles.label} />
                     </View>
                     <View style={styles.checkboxContainer}>
                         <CheckBox
@@ -85,7 +85,7 @@ class Contact extends Component  {
                             value={this.props.isMean}
                             onValueChange={(value) => this.props.setMeanword(value)}
                         />
-                        <Text style={styles.label}>Nghia</Text>
+                        <AppText i18nKey={"mean"} style={styles.label} />
                     </View>
                     <View style={styles.checkboxContainer}>
                         <CheckBox
@@ -93,7 +93,7 @@ class Contact extends Component  {
                             value={this.props.isReverse}
                             onValueChange={(value) => this.props.setReverseword(value)}
                         />
-                        <Text style={styles.label}>Dao</Text>
+                        <AppText i18nKey={"reverse"} style={styles.label} />
                     </View>
 
                 </View>
@@ -106,7 +106,7 @@ class Contact extends Component  {
                             onValueChange={(value) => this.seletwordall(value)}
 
                         />
-                        <Text style={styles.label}>Tat ca</Text>
+                        <AppText i18nKey={"all"} style={styles.label}  />
                     </View>
 
                     <View style={styles.checkboxContainer}>
@@ -115,7 +115,7 @@ class Contact extends Component  {
                             value={this.props.isMemerize}
                             onValueChange={(value) => this.seletMemerizedall(value)}
                         />
-                        <Text style={styles.label}>da nho</Text>
+                        <AppText i18nKey={"memerize"} style={styles.label} />
                     </View>
 
                     <View style={styles.checkboxContainer}>
@@ -124,7 +124,7 @@ class Contact extends Component  {
                             value={this.props.isNotMemerize}
                             onValueChange={(value) => this.seletNotMemerizedall(value)}
                         />
-                        <Text style={styles.label}>chua nho</Text>
+                        <AppText i18nKey={"not memerize"} style={styles.label} />
                     </View>
                     <View style={styles.checkboxContainer}>
                         <CheckBox
@@ -133,7 +133,7 @@ class Contact extends Component  {
                             checked={this.props.isLike}
                             onValueChange={(value) => this.seletLikeall(value)}
                         />
-                        <Text style={styles.label}>Thich</Text>
+                        <AppText i18nKey={"like"} style={styles.label} />
                     </View>
 
                 </View>
@@ -204,4 +204,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contact);
+export default connect(mapStateToProps, mapDispatchToProps)(NewWords);

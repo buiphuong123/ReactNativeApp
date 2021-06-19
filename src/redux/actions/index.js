@@ -98,3 +98,17 @@ export const showWordNotMemerize = (notmemerizewordAttr) => {
         notmemerizewordAttr
     }
 }
+// show like+memerize
+export const likeMem = (checkwordArr) => {
+    return {
+        type: types.SHOW_ALL_WORD,
+        checkwordArr
+    }
+}
+export const showAllMemerize = (id) =>{
+    return {
+        type:  types.SHOW_MEMERIZE,
+        id
+    }
+    
+}

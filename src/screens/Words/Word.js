@@ -5,6 +5,7 @@ import { renderNode } from 'react-native-elements/dist/helpers';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import AppText from '../../components/app-text';
 import ListWord from './ListWord';
 import * as actions from '../../redux/actions/index';
 const { width: WIDTH } = Dimensions.get('window');
@@ -21,7 +22,7 @@ class Word extends Component {
   setStar(userId, wordId) {
     // this.setState({ isColor: true });
     this.props.word.isLike = true;
-    axios.post("http://192.168.1.8:3001/userLike", {
+    axios.post("https://language-backend.vercel.app/userLike", {
       "userId": userId,
       "wordId": wordId,
     }, {
@@ -35,13 +36,13 @@ class Word extends Component {
         response.data.userLike[0].wordId.isLike = true;
         this.props.setUserLike(this.props.likewordAttr.concat(response.data.userLike[0].wordId));
       })
-      .catch((error) => { console.log('http://192.168.1.8:3001/userLike', JSON.stringify(error)) });
+      .catch((error) => { console.log('https://language-backend.vercel.app/userLike', JSON.stringify(error)) });
   }
 
   deleteStar(userId, wordId) {
     // this.setState({ isColor: false });
     this.props.word.isLike = false;
-    axios.post("http://192.168.1.8:3001/userDisLike", {
+    axios.post("https://language-backend.vercel.app/userDisLike", {
       "userId": userId,
       "wordId": wordId,
     }, {
@@ -55,12 +56,12 @@ class Word extends Component {
         response.data.userDis[0].wordId.isLike = false;
         this.props.setUserLike(this.props.likewordAttr.filter(item => item._id !== response.data.userDis[0].wordId._id));
       })
-      .catch((error) => { console.log('http://192.168.1.8:3001/userDisLike/', JSON.stringify(error)) });
+      .catch((error) => { console.log('https://language-backend.vercel.app/userDisLike/', JSON.stringify(error)) });
   }
   setMemerize(userId, wordId) {
     // this.setState({ isCheck: !this.state.isCheck });
     this.props.word.isMemerize = true;
-    axios.post("http://192.168.1.8:3001/userMemerize", {
+    axios.post("https://language-backend.vercel.app/userMemerize", {
       "userId": userId,
       "wordId": wordId,
     }, {
@@ -75,11 +76,11 @@ class Word extends Component {
         this.props.setUserMemerize(this.props.memerizewordAttr.concat(response.data.usermemerize[0].wordId));
         this.props.setnotUserMemerize(this.props.notmemerizewordAttr.filter(item => item._id !==wordId));
       })
-      .catch((error) => { console.log('http://192.168.1.8:3001/userMemerize', JSON.stringify(error)) });
+      .catch((error) => { console.log('https://language-backend.vercel.app/userMemerize', JSON.stringify(error)) });
   }
   deleteMemerize(userId, wordId) {
-    this.props.isMemerize = false;
-    axios.post("http://192.168.1.8:3001/userNotMemerize", {
+    this.props.word.isMemerize = false;
+    axios.post("https://language-backend.vercel.app/userNotMemerize", {
       "userId": userId,
       "wordId": wordId,
     }, {
@@ -91,10 +92,10 @@ class Word extends Component {
       .then((response) => {
         console.log(response.data.message);
         response.data.userNotMem[0].wordId.isMemerize = false;
-        this.props.setUserMemerize(this.props.memerizewordAttr.filter(item => item._id !== response.data.userNotMem[0].wordId._id));
-        // this.props.setnotUserMemerize(this.props.notmemerizewordAttr.concat(response.data.));
+        this.props.setUserMemerize(this.props.memerizewordAttr.filter(item => item._id !== wordId));
+        this.props.setnotUserMemerize(this.props.notmemerizewordAttr.concat(response.data.userNotMem[0].wordId));
       })
-      .catch((error) => { console.log('http://192.168.1.8:3001/userNotMemerize', JSON.stringify(error)) });
+      .catch((error) => { console.log('https://language-backend.vercel.app/userNotMemerize', JSON.stringify(error)) });
   }
  onPress = () => {
 
@@ -122,10 +123,8 @@ class Word extends Component {
             <View style={{flexDirection: 'row'}}>
                 {isKanji ? <Text style={{ marginLeft: 5, textTransform:'uppercase' }}>[{word.amhan==''? '' : word.amhan}]</Text> : null}
                 {isMean ? <Text style={{ marginLeft: 5 }}>{word.vn}</Text> : null}
-                <Text>{word.userLike}</Text>
-                <Text>nulll</Text>
             </View>
-            <TouchableOpacity  onPress={() => { this.state.isCheck ? this.deleteMemerize(userId, word._id) : this.setMemerize(userId, word._id) }}>
+            <TouchableOpacity  onPress={() => { word.isMemerize ? this.deleteMemerize(userId, word._id) : this.setMemerize(userId, word._id) }}>
               <Icon style={[styles.check, { color: word.isMemerize ? 'green' : '#999999' }]} name="checkmark-circle-outline" size={25} />
             </TouchableOpacity>
 

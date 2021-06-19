@@ -6,6 +6,7 @@ import cartReducer from './cartReducer';
 import likeReducer from './likeReducer';
 import memerizeReducer from './memerizeReducer';
 import notMemerizeReducer from './notMemerizeReducer';
+import tickReducer from './tickReducer';
 const appReducers = combineReducers({
     languageReducer,
     userReducer,
@@ -14,6 +15,7 @@ const appReducers = combineReducers({
     likeReducer,
     memerizeReducer,
     notMemerizeReducer,
+    tickReducer,
 });
 
 export default appReducers;

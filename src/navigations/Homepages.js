@@ -5,8 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ListAttr from '../screens/Attr/ListAttr';
 import Cart from '../screens/Cart/Cart';
-import Contact from '../screens/Contact/Contact';
-import Search from '../screens/Search/Search';
+import NewWords from '../screens/Words/NewWords';
+import FlashCard from '../screens/FlashCard/FlashCard';
 const Tab = createBottomTabNavigator();
 export default class Homepages extends Component{
     render() {
@@ -18,13 +18,13 @@ export default class Homepages extends Component{
                                 let iconName;
                                 if(route.name==='ListAttr'){
                                     iconName= focused?'home' : 'home';
-                                }else if (route.name === 'Contact') {
+                                }else if (route.name === 'NewWords') {
                                     iconName = focused ? 'home' : 'home';
                                 }
                                 else if(route.name=== 'Cart'){
                                     iconName= focused? 'home' : 'home';
                                 }
-                                else if(route.name==='Search'){
+                                else if(route.name==='FlashCard'){
                                     iconName= focused? 'search': 'search';
                                 }
                                 return <Icon name={iconName} size={size} color={color} />;
@@ -37,9 +37,9 @@ export default class Homepages extends Component{
                     >
                         <Tab.Screen name="ListAttr" component={ListAttr} 
                         />
-                        <Tab.Screen name="Contact" component={Contact} />
+                        <Tab.Screen name="NewWords" component={NewWords} />
                         <Tab.Screen name="Cart" component={Cart} />
-                        <Tab.Screen name="Search" component={Search} />
+                        <Tab.Screen name="FlashCard" component={FlashCard} />
 
                  </Tab.Navigator>
            

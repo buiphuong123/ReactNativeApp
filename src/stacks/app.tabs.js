@@ -26,7 +26,7 @@ class AppTabbar extends Component{
                 <Tab.Navigator>
                     <Tab.Screen name="Home" component={HomeScreen} />
                     <Tab.Screen name="Settings" component={SettingScreen} />
-                    <Tab.Screen name="Contact" component={ContactScreen} />
+                    <Tab.Screen name="NewWords" component={NewWordsScreen} />
                 </Tab.Navigator>
             </NavigationContainer>
         );

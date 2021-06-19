@@ -14,3 +14,5 @@ export const SHOW_CARD = 'SHOW_CARD';
 export const SHOW_LIKE = 'SHOW_LIKE';
 export const SHOW_NOT_MEMERIZE = 'SHOW_NOT_MEMERIZE';
 export const SHOW_WORD_NOT_MEMERIZE = 'SHOW_WORD_NOT_MEMERIZE';
+export const SHOW_ALL_WORD = 'SHOW_ALL_WORD';
+export const SHOW_MEMERIZE = 'SHOW_MEMERIZE';

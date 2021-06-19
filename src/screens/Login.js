@@ -56,7 +56,7 @@ class Login extends Component {
             }
         }
         else {
-            axios.post("http://192.168.1.8:3001/login", {
+            axios.post("https://language-backend.vercel.app/login", {
                 "username": this.state.username,
                 "password": this.state.password,
             }, {
@@ -78,7 +78,7 @@ class Login extends Component {
                         AsyncStorage.setItem('@username', response.data.user.username);
                         AsyncStorage.setItem('@email', response.data.user.email);
                         setTimeout(() => {
-                            this.props.navigation.navigate("Contact");
+                            this.props.navigation.navigate("NewWords");
                         }, 2000)
 
 

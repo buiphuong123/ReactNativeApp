@@ -16,13 +16,14 @@ class ListWord extends Component{
             WordMemerize: [],
             WordNotMemerize: [],
             colorLike: false,
+            LikeMem: [],
         }
         
     } 
     
      
      wordUserLike= (id) => {
-        axios.get("http://192.168.1.8:3001/findUserLike/"+id)
+        axios.get("https://language-backend.vercel.app/findUserLike/"+id)
 
         .then(response => {
             var i;
@@ -38,12 +39,11 @@ class ListWord extends Component{
         })
      }
 
-     showWord= () => {
-        axios.get("https://language-backend.vercel.app/getWord")
+     showWord= (id) => {
+        axios.get("https://language-backend.vercel.app/getWord/"+ id)
         .then(response => {
             this.setState({WordSr: response.data.wordData});
             this.props.setListCard(this.state.WordSr);
-            console.log(this.state.WordSr.length);
         })
         .catch(error => {
             console.log(error);
@@ -52,7 +52,7 @@ class ListWord extends Component{
 
 
      wordUserMemerize = (id) => {
-        axios.get("http://192.168.1.8:3001/findUserMemerize/"+id)
+        axios.get("https://language-backend.vercel.app/findUserMemerize/"+id)
 
         .then(response => {
             var i;
@@ -68,22 +68,60 @@ class ListWord extends Component{
      }
 
      wordUserNotMemerize = (id) => {
-        axios.get("http://192.168.1.8:3001/listWordNotMemerize/"+id)
+        axios.get("https://language-backend.vercel.app/listWordNotMemerize/"+id)
 
         .then(response => {
             this.props.setnotUserMemerize(response.data.result);
-            console.log('user not like' + response.data.result);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+     }
+
+     wordUserMemLike = (id) => {
+        axios.get("https://language-backend.vercel.app/listWordLikeMem/"+id)
+
+        .then(response => {
+            var i;
+            for(i=0;i<response.data.result.length;i++) {
+                response.data.result[i].wordId.isLike = response.data.result[i].isLike;
+                response.data.result[i].wordId.isMemerize = true;
+                this.setState({LikeMem: this.state.LikeMem.concat(response.data.result[i].wordId)});
+            }
+            for(i=0;i<response.data.memer.length;i++) {
+                response.data.memer[i].wordId.isMemerize = response.data.memer[i].isMemerize;
+                this.setState({LikeMem: this.state.LikeMem.concat(response.data.memer[i].wordId)});
+            }
+            for(i=0;i<response.data.onlyLike.length;i++) {
+                response.data.onlyLike[i].wordId.isLike = response.data.onlyLike[i].isLike;
+                this.setState({LikeMem: this.state.LikeMem.concat(response.data.onlyLike[i].wordId)});
+            }
+            this.props.setwordLikeMem(this.state.LikeMem);
+            console.log('all day nhes: ' + JSON.stringify(this.props.checkwordArr));
         })
         .catch(error => {
             console.log(error);
         })
      }
      UNSAFE_componentWillMount() {
+         console.log('vao 1');
         this.wordUserLike(this.props.id);
-        this.showWord();
+        this.showWord(this.props.id);
         this.wordUserMemerize(this.props.id);
         this.wordUserNotMemerize(this.props.id);
+        // this.wordUserMemLike(this.props.id);
     }
+
+    // UNSAFE_componentWillReceiveProps(nextProps){
+    //     console.log('vao 2');
+    //     const { id } = nextProps;
+    //     console.log('vao 2 id=' + id);
+    //    if(id !== this.props.id){
+    //        this.wordUserLike(this.props.id);
+    //        this.wordUserMemerize(this.props.id);
+    //        this.wordUserNotMemerize(this.props.id);
+    //    }
+    //  }
     render() {
        
         const {WordSr, WordLike, WordMemerize} = this.state;
@@ -110,6 +148,7 @@ const mapStateToProps = state => {
         likewordAttr: state.likeReducer.likewordAttr,
         memerizewordAttr: state.memerizeReducer.memerizewordAttr,
         notmemerizewordAttr: state.notMemerizeReducer.notmemerizewordAttr,
+        checkwordArr: state.tickReducer.checkwordArr,
     }
   };
 const mapDispatchToProps = dispatch => {
@@ -125,6 +164,9 @@ const mapDispatchToProps = dispatch => {
         },
         setnotUserMemerize: (notmemerizewordAttr) => {
             dispatch(actions.showWordNotMemerize(notmemerizewordAttr));
+        },
+        setwordLikeMem : (checkwordArr) => {
+            dispatch(actions.likeMem(checkwordArr));
         }
     }
 }

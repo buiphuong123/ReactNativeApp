@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import english from '../../res/images/english.png';
 import vn from '../../res/images/vn.jpg';
-
-
-import AppText from '../components/app-text';
+import jp from '../../res/images/jp.jpg';
 import { connect } from 'react-redux';
 import * as actions from './../redux/actions/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +13,6 @@ class Language extends Component {
         this.props.setLanguage(language);
         try{
             await AsyncStorage.setItem('@storage_key', value);
-            console.log('save okkkk');
         } catch(e){
             console.log('error store async storage');
         }
@@ -28,33 +24,24 @@ class Language extends Component {
     render() {
         return (
             <View style={{flexDirection: 'column', padding: 30}}>
-                <AppText i18nKey={'set-language'}>Chọn ngôn ngữ</AppText>
-                <AppText i18nKey={'this-is-home-page'}>This is home screen</AppText>
                 <Text style={{alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', alignItems: 'center', padding: 20, fontSize: 18}}> CHOOSE LANGUAGE</Text>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center', alignItems: "center"}}>
-                    <Image source={english} style={styles.image} />
+                    <Image source={jp} style={styles.image} />
                     <TouchableOpacity style={styles.language}>
-                        <Text>japan</Text>
+                        <Text style={{marginLeft: 60}}>japan</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center', alignItems: "center"}}>
                     <Image source={vn} style={styles.image} />
                     <TouchableOpacity style={styles.language} onPress={() => this.setLanguage('vi', 'vi')}>
-                        <Text>Vietnamese</Text>
+                        <Text style={{marginLeft: 20}}>Vietnamese</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center', alignItems: "center"}}>
                     <Image source={english} style={styles.image} />
                     <TouchableOpacity style={styles.language} onPress={() => this.setLanguage('en', 'en')}>
-                        <Text>English</Text>
+                        <Text style={{marginLeft: 40}}>English</Text>
                     </TouchableOpacity>
-                </View>
-
-                <View>
-                    <TouchableOpacity onPress={()=> this.takeDatainredux()}>
-                        <Text>redux</Text>
-                    </TouchableOpacity>
-
                 </View>
 
             </View>
