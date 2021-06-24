@@ -113,7 +113,7 @@ class Item extends Component {
 }
 
 class Search extends Component {
-    _renderItem = ({ item, index }) => <Item item={item} count={index} countWord={this.props.cartwordAttr.length}/>
+    _renderItem = ({ item, index }) => <Item item={item} count={index} countWord={this.props.checkwordArr.length}/>
     render() {
         return (
             <Container>
@@ -121,7 +121,7 @@ class Search extends Component {
                     <Carousel
                         // layout={'tinder'} 
                         // layoutCardOffset={`9`}
-                        data={this.props.cartwordAttr}
+                        data={this.props.checkwordArr}
                         renderItem={this._renderItem}
                         sliderWidth={Dimensions.get('window').width}
                         itemWidth={Dimensions.get('window').width - 40}
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = state => {
     return {
-        cartwordAttr: state.cartReducer.cartwordAttr
+        checkwordArr: state.tickReducer.checkwordArr,
     }
 };
 export default connect(mapStateToProps, null)(Search);

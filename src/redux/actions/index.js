@@ -105,10 +105,3 @@ export const likeMem = (checkwordArr) => {
         checkwordArr
     }
 }
-export const showAllMemerize = (id) =>{
-    return {
-        type:  types.SHOW_MEMERIZE,
-        id
-    }
-    
-}

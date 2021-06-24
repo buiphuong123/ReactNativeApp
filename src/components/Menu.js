@@ -20,6 +20,7 @@ class Menu extends Component {
             alert: '',
             successmess: '',
             errormess: '',
+            array: [],
         }
     }
     logout = (value) => {
@@ -27,8 +28,11 @@ class Menu extends Component {
         AsyncStorage.setItem('@id', '');
         AsyncStorage.setItem('@username', '');
         AsyncStorage.setItem('@email', '');
-        this.props.setUserLike([]);
-        this.props.setUserMemerize([]);
+        this.setState({array: []});
+        this.props.setUserLike(this.state.array);
+        this.props.setUserMemerize(this.state.array);
+        this.props.setwordLikeMem(this.state.array);
+        console.log('checkwordAttr luc nay: ' + this.props.checkwordArr);
     }
     openedit = () => {
         this.setState({ modalVisible: true });
@@ -57,6 +61,7 @@ class Menu extends Component {
                         this.props.setUser(this.props.id, this.state.usernames, this.props.email);
                         console.log('redux update' + this.props.username);
                         AsyncStorage.setItem('@username', this.state.usernames);
+
                     }
                     setTimeout(() => {
                         this.setState({ successmess: '' });
@@ -261,7 +266,9 @@ const mapStateToProps = state => {
     return {
         id: state.userReducer.id,
         username: state.userReducer.username,
-        language: state.languageReducer.language
+        language: state.languageReducer.language,
+        checkwordArr: state.tickReducer.checkwordArr,
+
     };
 };
 
@@ -278,7 +285,10 @@ const mapDispatchToProps = dispatch => {
         },
         setUserMemerize: (memerizewordAttr) => {
             dispatch(actions.showNotMemerize(memerizewordAttr));
-        }
+        },
+        setwordLikeMem : (checkwordArr) => {
+            dispatch(actions.likeMem(checkwordArr));
+        },
     }
 }
 
